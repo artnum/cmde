@@ -1,0 +1,159 @@
+body {
+    overflow-x: hidden;
+}
+#title {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 60px;
+    max-height: 60px;
+    margin: 0;
+    padding: 0;
+}
+main {
+    display: flex;
+    flex-direction: row;
+    margin: 60px 0 120px 0;
+}
+
+nav, #history {
+    max-width: 10vw;
+    min-width: 10vw;
+}
+
+nav a {
+    display: block;
+}
+
+#content {
+    max-width: 80vw;
+    min-width: 80vw;
+}
+
+footer {
+    min-height: 120px;
+    max-height: 120px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+}
+
+label {
+    line-height: 2em;
+}
+
+.filedropper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: lightgray;
+    font-size: 2em;
+    font-weight: bold;
+    max-height: 3em;
+    min-height: 3em;
+    width: 100%;
+    border: 2px dotted black;
+}
+.filedropper.dragover {
+    color: lightcoral;
+    border-color: lightcoral;
+}
+.filedropper span {
+    pointer-events: none;
+}
+
+.fileupload {
+    display: flex;
+    flex-wrap: wrap;
+}
+.file-image {
+    min-width: 4.3ch;
+    font-family: sans-serif;
+    position: relative;
+    align-items: center;
+    margin: 2px;
+    padding: 2px;
+    width: 180px;
+    height: 48px;
+    background-image: url(../icons/mimetype/gnome-fs-regular.png);
+    background-position: 0 0;
+    background-size: contain;
+    background-repeat:no-repeat;
+}
+
+.file-image.word {
+    background-image: url(../icons/mimetype/wordprocessing.png);
+}
+
+.file-image.excel {
+    background-image: url(../icons/mimetype/spreadsheet.png);
+}
+
+.file-image.powerpoint {
+    background-image: url(../icons/mimetype/gnome-mime-application-vnd.ms-powerpoint.png);
+}
+
+.file-image.database {
+    background-image: url(../icons/mimetype/libreoffice-oasis-database.png);
+}
+
+.file-image.video {
+    background-image: url(../icons/mimetype/gnome-mime-video.png);
+}
+
+.file-image.audio {
+    background-image: url(../icons/mimetype/gnome-mime-audio.png);
+}
+
+.file-image.pdf {
+    background-image: url(../icons/mimetype/gnome-mime-application-pdf.png);
+}
+
+.file-image.html {
+    background-image: url(../icons/mimetype/www.png);
+}
+
+.file-image.text {
+    background-image: url(../icons/mimetype/gnome-mime-text.png);
+}
+
+.file-image.image {
+    background-image: url(../icons/mimetype/gnome-mime-image.png);
+}
+
+.file-image.compress {
+    background-image: url(../icons/mimetype/zip.png);
+}
+
+.file-image.font {
+    background-image: url(../icons/mimetype/font.png);
+}
+
+.file-image.calendar {
+    background-image: url(../icons/mimetype/plan.png);
+}
+
+.file-image.binary {
+    background-image: url(../icons/mimetype/binary.png);
+}
+
+.file-image .progress {
+    background-color: rgba(0, 0, 255, 0.4);
+    min-height: 12px;
+    max-height: 12px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+}
+.file-image .name {
+    font-size: 12px;
+    overflow: hidden;
+    position: absolute;
+    left: 46px;
+    bottom: calc(50% - 12px);
+}

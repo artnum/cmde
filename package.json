@@ -1,0 +1,9 @@
+{
+    "name": "CMDE",
+    "license": "MIT",
+    "main": "app/index.htm",
+    "dependencies": {
+        "kcore": "artnum/kcore",
+        "kfileupload": "artnum/kfileupload"
+    }
+}
