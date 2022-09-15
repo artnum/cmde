@@ -5,10 +5,10 @@ use PDO;
 
 interface Backend {
     function __construct(PDO $pdo, string $table);
-    function get(int $uid);
-    function delete (int $uid);
+    function get($uid);
+    function delete ($uid);
     function create ($data);
-    function update (int $uid, $data);
+    function update ($uid, $data);
     function query ($body);
 }
 
@@ -44,7 +44,7 @@ class SQLBackend implements Backend {
         return $entry;
     }
 
-    function get (int $uid) {
+    function get ($uid) {
         try {
             $stmt = $this->pdo->prepare(sprintf('SELECT * FROM %s WHERE %s_uid = :uid', $this->table, $this->table));
             $stmt->bindParam(':uid', $uid, PDO::PARAM_INT);
@@ -62,7 +62,7 @@ class SQLBackend implements Backend {
         }
     }
 
-    function delete (int $uid) {
+    function delete ($uid) {
         try {
             $stmt = $this->pdo->prepare(sprintf('DELETE FROM %s WHERE %s_uid = :uid', $this->table, $this->table));
             $stmt->bindParam(':uid', $uid, PDO::PARAM_INT);
@@ -109,7 +109,7 @@ class SQLBackend implements Backend {
         }
     }
 
-    function update (int $uid, $data) {
+    function update ($uid, $data) {
         try {
             $this->pdo->beginTransaction();
 
