@@ -38,8 +38,18 @@ CREATE TABLE IF NOT EXISTS "ptype" (
     "ptype_color" CHAR(30) NOT NULL DEFAULT 'black' COMMENT 'Color associated with the type',
     "ptype_description" VARCHAR(260) NOT NULL DEFAULT '' COMMENT 'description of the type',
     "ptype_category" VARCHAR(20) NOT NULL DEFAULT '' COMMENT 'Category (progress type, material type, storage type, ...)',
-    CONSTRAINT "ptype_code" UNIQUE INDEX
+    "ptype_deleted" INT UNSIGNED DEFAULT 0 COMMENT 'unix timestamp of deletion',
+    "ptype_locked" TINYINT UNSIGNED DEFAULT 0 COMMENT 'set to 1 if cannot be deleted',
+    UNIQUE INDEX ("ptype_code")
 ) COMMENT 'Type of any available' CHARACTER SET 'utf8mb4';
+
+CREATE TABLE IF NOT EXISTS "succession" (
+    "succession_uid" INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    "succession_from" INTEGER UNSIGNED NOT NULL,
+    "succession_to" INTEGER UNSIGNED NOT NULL,
+    FOREIGN KEY ("succession_from") REFERENCES "ptype"("ptype_uid") ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY ("succession_to") REFERENCES "ptype"("ptype_uid") ON UPDATE CASCADE ON DELETE CASCADE
+) COMMENT 'Succession of progress type (ptype)';
 
 CREATE TABLE IF NOT EXISTS "cmate" ( -- name is set as long as cdate to fit into pattrchange
     "cmate_uid" INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -82,9 +92,9 @@ CREATE TABLE IF NOT EXISTS "pattrchange" (
 ) COMMENT 'describe attributes changed during a progression event' CHARACTER SET 'utf8mb4';
 
 CREATE TABLE IF NOT EXISTS "cmdprj" (
+    "cmdprj_uid" INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     "cmdprj_project" INTEGER UNSIGNED NOT NULL COMMENT 'Project might be stored on another db',
     "cmdprj_commande" INTEGER UNSIGNED NOT NULL,
-    PRIMARY KEY ("cmdprj_project", "cmdprj_commande"),
     FOREIGN KEY ("cmdprj_commande") REFERENCES "commande"("commande_uid") ON UPDATE CASCADE ON DELETE CASCADE
 ) COMMENT 'link project to command, multiple project on one commmande' CHARACTER SET 'ascii';
 
@@ -108,9 +118,22 @@ CREATE TABLE IF NOT EXISTS "item" (
     "item_name" VARCHAR(60) NOT NULL DEFAULT '',
     "item_description" VARCHAR(200) NOT NULL DEFAULT '',
     "item_quantity" INTEGER DEFAULT 0,
+    "item_unitvalue" INTEGER DEFAULT NULL,
+    "item_unitname" CHAR(20) DEFAULT '',
     "item_price" INTEGER DEFAULT 0 COMMENT 'price, no float as 7.5 * 1000 = 7500, so up to 3 decimals',
     "item_internid" INTEGER UNSIGNED DEFAULT 0 COMMENT 'Internal id, an id from an internal database',
     "item_reference" VARCHAR(200) DEFAULT '' COMMENT 'supplier reference number/code',
     FOREIGN KEY ("item_commande") REFERENCES "commande"("commande_uid") ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY ("item_cmate") REFERENCES "cmate"("cmate_uid") ON UPDATE CASCADE ON DELETE SET NULL
 ) COMMENT 'Item line in a order ' CHARACTER SET 'utf8mb4';
+
+INSERT INTO "ptype" ("ptype_uid", "ptype_name", "ptype_code", "ptype_color", "ptype_category") VALUES 
+    (1, 'Création', 'create', 'black', 'progress'),
+    (2, 'Fermeture', 'close', 'black', 'progress'),
+    (3, 'Envoi', 'send-order', 'black', 'progress'), 
+    (4, 'Suppression', 'delete', 'black', 'progress'),
+    (5, 'Restauration', 'restore', 'black', 'progress'),
+    (6, 'Réouverture', 'reopen', 'black', 'progress');
+
+INSERT INTO "succession" ("succession_from", "succession_to") VALUES 
+    (1,2), (1,3), (1,4), (2,6), (2,4), (2,4), (3,4), (5,2), (5,3), (5,4),(6,2),(6,3),(6,4);
